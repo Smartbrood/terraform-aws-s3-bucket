@@ -15,6 +15,11 @@ variable "files" {
   type = "map"
 }
 
+variable "tags" {
+  description = "A mapping of tags to assign to security group"
+  default     = {}
+}
+
 
 
 
