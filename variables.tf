@@ -16,7 +16,7 @@ variable "files" {
 }
 
 variable "tags" {
-  description = "A mapping of tags to assign to security group"
+  description = "A mapping of tags to assign to bucket"
   default     = {}
 }
 
