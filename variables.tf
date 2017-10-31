@@ -20,6 +20,11 @@ variable "tags" {
   default     = {}
 }
 
+variable "allow_public" {
+  description = "Allow public read access to bucket"
+  default     = false
+}
+
 
 
 
