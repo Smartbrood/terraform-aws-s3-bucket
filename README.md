@@ -9,16 +9,17 @@ Example of Bucket with only private access
 
 ```hcl
 module "s3_bucket" {
-  source         = "Smartbrood/s3-bucket/aws"
-  s3_fqdn        = "${var.s3_fqdn}"
-  aws_account_id = "${var.aws_account_id}"
-  aws_username   = "${var.aws_username}"
-  files          = "${var.files}"
+    source         = "Smartbrood/s3-bucket/aws"
+    s3_fqdn        = "${var.s3_fqdn}"
+    aws_account_id = "${var.aws_account_id}"
+    aws_username   = "${var.aws_username}"
+    files          = "${var.files}"
 
-  tags = {
-    Terraform = "true"
-    Environment = "dev"
-  }
+    tags = {
+        Terraform   = "true"
+        Environment = "stage"
+        Project     = "my_project"
+    }
 }
 ```
 
@@ -28,18 +29,19 @@ Example of Bucket with read public access
 
 ```hcl
 module "s3_bucket" {
-  source         = "Smartbrood/s3-bucket/aws"
-  s3_fqdn        = "${var.s3_fqdn}"
-  aws_account_id = "${var.aws_account_id}"
-  aws_username   = "${var.aws_username}"
-  files          = "${var.files}"
+    source         = "Smartbrood/s3-bucket/aws"
+    s3_fqdn        = "${var.s3_fqdn}"
+    aws_account_id = "${var.aws_account_id}"
+    aws_username   = "${var.aws_username}"
+    files          = "${var.files}"
 
-  allow_public   = "true"
+    allow_public   = "true"
 
-  tags = {
-    Terraform = "true"
-    Environment = "dev"
-  }
+    tags = {
+        Terraform   = "true"
+        Environment = "stage"
+        Project     = "my_project"
+    }
 }
 ```
 
