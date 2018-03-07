@@ -25,6 +25,10 @@ variable "allow_public" {
   default     = false
 }
 
+variable "loggingBucket" {
+  description = "The bucket you want to log S3 access to."
+  default     = ""
+}
 
 
 

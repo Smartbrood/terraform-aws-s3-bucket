@@ -4,6 +4,7 @@ resource "aws_s3_bucket" "this" {
   tags = "${merge(var.tags, map("Name", format("%s", var.s3_fqdn)))}"
 }
 
+
 resource "aws_s3_bucket_policy" "private" {
   count  = "${var.allow_public ? 0 : 1}"
   bucket = "${aws_s3_bucket.this.id}"
@@ -24,6 +25,16 @@ resource "aws_s3_bucket_policy" "private" {
   ]
 }
 EOF
+}
+
+resource "aws_s3_bucket" "bucket_log" {
+  count  = "${var.loggingBucket == "" ? 1 : 0}"
+  bucket = "${var.s3_fqdn}-bucket-log"
+  acl    = "log-delivery-write"
+
+  tags {
+    name  = "LoggingBucket"
+  }
 }
 
 resource "aws_s3_bucket_policy" "public" {
