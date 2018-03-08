@@ -12,7 +12,7 @@ variable "aws_username" {
 
 variable "files" {
   description = "map s3 keys to files"
-  type = "map"
+  type        = "map"
 }
 
 variable "tags" {
@@ -29,6 +29,3 @@ variable "loggingBucket" {
   description = "The bucket you want to log S3 access to."
   default     = ""
 }
-
-
-
