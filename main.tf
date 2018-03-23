@@ -1,13 +1,33 @@
+locals {
+  defaultLoggingBucket = "${var.s3_fqdn}-bucket-log"
+}
+
+resource "aws_s3_bucket" "bucket_log" {
+  count  = "${var.loggingBucket == "" ? 1 : 0}"
+  bucket = "${local.defaultLoggingBucket}"
+  acl    = "log-delivery-write"
+
+  tags {
+    name = "LoggingBucket"
+  }
+}
+
 resource "aws_s3_bucket" "this" {
-  bucket = "${var.s3_fqdn}"
+  bucket        = "${var.s3_fqdn}"
   force_destroy = true
-  tags = "${merge(var.tags, map("Name", format("%s", var.s3_fqdn)))}"
+  tags          = "${merge(var.tags, map("Name", format("%s", var.s3_fqdn)))}"
+
+  logging {
+    target_bucket = "${var.loggingBucket != "" ? var.loggingBucket : local.defaultLoggingBucket}"
+    target_prefix = "log/"
+  }
 }
 
 resource "aws_s3_bucket_policy" "private" {
   count  = "${var.allow_public ? 0 : 1}"
   bucket = "${aws_s3_bucket.this.id}"
-  policy =<<EOF
+
+  policy = <<EOF
 {
   "Version": "2012-10-17",
   "Statement": [
@@ -29,6 +49,7 @@ EOF
 resource "aws_s3_bucket_policy" "public" {
   count  = "${var.allow_public ? 1 : 0}"
   bucket = "${aws_s3_bucket.this.id}"
+
   policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -61,12 +82,9 @@ EOF
 }
 
 resource "aws_s3_bucket_object" "file" {
-  count   = "${length(var.files)}"
-  bucket  = "${aws_s3_bucket.this.id}"
-  key     = "${element(keys(var.files), count.index)}"
-  source  = "${lookup(var.files, element(keys(var.files), count.index))}"
-  etag    = "${md5(file("${lookup(var.files, element(keys(var.files), count.index))}"))}"
+  count  = "${length(var.files)}"
+  bucket = "${aws_s3_bucket.this.id}"
+  key    = "${element(keys(var.files), count.index)}"
+  source = "${lookup(var.files, element(keys(var.files), count.index))}"
+  etag   = "${md5(file("${lookup(var.files, element(keys(var.files), count.index))}"))}"
 }
-
-
-
