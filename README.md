@@ -14,6 +14,7 @@ module "s3_bucket" {
     aws_account_id = "${var.aws_account_id}"
     aws_username   = "${var.aws_username}"
     files          = "${var.files}"
+    base64_files   = "${var.base64_files}"
 
     tags = {
         Terraform   = "true"
@@ -34,6 +35,7 @@ module "s3_bucket" {
     aws_account_id = "${var.aws_account_id}"
     aws_username   = "${var.aws_username}"
     files          = "${var.files}"
+    base64_files   = "${var.base64_files}"
 
     allow_public   = "true"
 
