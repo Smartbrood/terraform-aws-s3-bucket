@@ -88,3 +88,10 @@ resource "aws_s3_bucket_object" "file" {
   source = "${lookup(var.files, element(keys(var.files), count.index))}"
   etag   = "${md5(file("${lookup(var.files, element(keys(var.files), count.index))}"))}"
 }
+
+resource "aws_s3_bucket_object" "base64_file" {
+  count          = "${length(var.base64_files)}"
+  bucket         = "${aws_s3_bucket.this.id}"
+  key            = "${element(keys(var.base64_files), count.index)}"
+  content_base64 = "${lookup(var.base64_files, element(keys(var.base64_files), count.index))}"
+}
