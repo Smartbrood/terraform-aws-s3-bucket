@@ -36,3 +36,13 @@ variable "loggingBucket" {
   description = "The bucket you want to log S3 access to."
   default     = ""
 }
+
+variable "create_bucket" {
+  description = "Conditionally create S3 bucket"
+  default     = true
+}
+
+variable "upload_files" {
+  description = "Conditionally upload files"
+  default     = true
+}
