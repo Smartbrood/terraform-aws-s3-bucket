@@ -22,6 +22,10 @@ resource "aws_s3_bucket" "this" {
     target_bucket = "${var.loggingBucket != "" ? var.loggingBucket : local.defaultLoggingBucket}"
     target_prefix = "log/"
   }
+
+  versioning {
+    enabled = "${var.enable_versioning}"
+  }
 }
 
 resource "aws_s3_bucket_policy" "private" {

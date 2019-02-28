@@ -46,3 +46,8 @@ variable "upload_files" {
   description = "Conditionally upload files"
   default     = true
 }
+
+variable "enable_versioning" {
+  description = "Conditionally enable versioning"
+  default     = false
+}
