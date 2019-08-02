@@ -7,7 +7,7 @@ resource "aws_s3_bucket" "bucket_log" {
   bucket = "${local.defaultLoggingBucket}"
   acl    = "log-delivery-write"
 
-  tags {
+  tags = {
     name = "LoggingBucket"
   }
 }
@@ -30,7 +30,7 @@ resource "aws_s3_bucket" "this" {
 
 resource "aws_s3_bucket_policy" "private" {
   count  = "${var.allow_public != true && var.create_bucket ? 1 : 0}"
-  bucket = "${aws_s3_bucket.this.id}"
+  bucket = "${aws_s3_bucket.this[0].id}"
 
   policy = <<EOF
 {
@@ -53,7 +53,7 @@ EOF
 
 resource "aws_s3_bucket_policy" "public" {
   count  = "${var.allow_public && var.create_bucket ? 1 : 0}"
-  bucket = "${aws_s3_bucket.this.id}"
+  bucket = "${aws_s3_bucket.this[0].id}"
 
   policy = <<EOF
 {
