@@ -38,12 +38,12 @@ resource "aws_s3_bucket_policy" "private" {
   "Statement": [
     {
       "Sid": "",
-      "Action": ["s3:*"],
+      "Action": "s3:*",
       "Effect": "Allow",
       "Resource": ["arn:aws:s3:::${var.s3_fqdn}",
                    "arn:aws:s3:::${var.s3_fqdn}/*"],
       "Principal": {
-        "AWS": ["arn:aws:iam::${var.aws_account_id}:user/${var.aws_username}"]
+        "AWS": "arn:aws:iam::${var.aws_account_id}:user/${var.aws_username}"
       }
     }
   ]
@@ -61,12 +61,12 @@ resource "aws_s3_bucket_policy" "public" {
   "Statement": [
     {
       "Sid": "",
-      "Action": ["s3:*"],
+      "Action": "s3:*",
       "Effect": "Allow",
       "Resource": ["arn:aws:s3:::${var.s3_fqdn}",
                    "arn:aws:s3:::${var.s3_fqdn}/*"],
       "Principal": {
-        "AWS": ["arn:aws:iam::${var.aws_account_id}:user/${var.aws_username}"]
+        "AWS": "arn:aws:iam::${var.aws_account_id}:user/${var.aws_username}"
       }
     },
     {
