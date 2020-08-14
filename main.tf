@@ -3,8 +3,8 @@ locals {
 }
 
 resource "aws_s3_bucket" "bucket_log" {
-  count  = "${var.loggingBucket == "" && var.create_bucket ? 1 : 0}"
-  bucket = "${local.defaultLoggingBucket}"
+  count  = var.loggingBucket == "" && var.create_bucket ? 1 : 0
+  bucket = local.defaultLoggingBucket
   acl    = "log-delivery-write"
 
   tags = {
@@ -13,24 +13,24 @@ resource "aws_s3_bucket" "bucket_log" {
 }
 
 resource "aws_s3_bucket" "this" {
-  count         = "${var.create_bucket ? 1 : 0}"
-  bucket        = "${var.s3_fqdn}"
+  count         = var.create_bucket ? 1 : 0
+  bucket        = var.s3_fqdn
   force_destroy = true
-  tags          = "${merge(var.tags, map("Name", format("%s", var.s3_fqdn)))}"
+  tags          = merge(var.tags, map("Name", format("%s", var.s3_fqdn)))
 
   logging {
-    target_bucket = "${var.loggingBucket != "" ? var.loggingBucket : local.defaultLoggingBucket}"
+    target_bucket = var.loggingBucket != "" ? var.loggingBucket : local.defaultLoggingBucket
     target_prefix = "log/"
   }
 
   versioning {
-    enabled = "${var.enable_versioning}"
+    enabled = var.enable_versioning
   }
 }
 
 resource "aws_s3_bucket_policy" "private" {
-  count  = "${var.allow_public != true && var.create_bucket ? 1 : 0}"
-  bucket = "${aws_s3_bucket.this[0].id}"
+  count  = var.allow_public != true && var.create_bucket ? 1 : 0
+  bucket = aws_s3_bucket.this[0].id
 
   policy = <<EOF
 {
@@ -52,8 +52,8 @@ EOF
 }
 
 resource "aws_s3_bucket_policy" "public" {
-  count  = "${var.allow_public && var.create_bucket ? 1 : 0}"
-  bucket = "${aws_s3_bucket.this[0].id}"
+  count  = var.allow_public && var.create_bucket ? 1 : 0
+  bucket = aws_s3_bucket.this[0].id
 
   policy = <<EOF
 {
@@ -87,16 +87,16 @@ EOF
 }
 
 resource "aws_s3_bucket_object" "file" {
-  count  = "${var.upload_files ? length(var.files) : 0}"
-  bucket = "${var.s3_fqdn}"
-  key    = "${element(keys(var.files), count.index)}"
-  source = "${lookup(var.files, element(keys(var.files), count.index))}"
-  etag   = "${md5(file("${lookup(var.files, element(keys(var.files), count.index))}"))}"
+  count  = var.upload_files ? length(var.files) : 0
+  bucket = var.s3_fqdn
+  key    = element(keys(var.files), count.index)
+  source = lookup(var.files, element(keys(var.files), count.index))
+  etag   = md5(file("${lookup(var.files, element(keys(var.files), count.index))}"))
 }
 
 resource "aws_s3_bucket_object" "base64_file" {
-  count          = "${var.upload_files ? length(var.base64_files) : 0}"
-  bucket         = "${var.s3_fqdn}"
-  key            = "${element(keys(var.base64_files), count.index)}"
-  content_base64 = "${lookup(var.base64_files, element(keys(var.base64_files), count.index))}"
+  count          = var.upload_files ? length(var.base64_files) : 0
+  bucket         = var.s3_fqdn
+  key            = element(keys(var.base64_files), count.index)
+  content_base64 = lookup(var.base64_files, element(keys(var.base64_files), count.index))
 }
