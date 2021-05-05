@@ -10,12 +10,12 @@ Example of Bucket with only private access
 ```hcl
 module "s3_bucket" {
     source            = "Smartbrood/s3-bucket/aws"
-    s3_fqdn           = "${var.s3_fqdn}"
-    aws_account_id    = "${var.aws_account_id}"
-    aws_username      = "${var.aws_username}"
-    files             = "${var.files}"
-    base64_files      = "${var.base64_files}"
-    enable_versioning = "${var.enable_versioning}"
+    s3_fqdn           = var.s3_fqdn
+    aws_account_id    = var.aws_account_id
+    aws_username      = var.aws_username
+    files             = var.files
+    base64_files      = var.base64_files
+    enable_versioning = var.enable_versioning
 
     tags = {
         Terraform   = "true"
@@ -32,12 +32,12 @@ Example of Bucket with read public access
 ```hcl
 module "s3_bucket" {
     source            = "Smartbrood/s3-bucket/aws"
-    s3_fqdn           = "${var.s3_fqdn}"
-    aws_account_id    = "${var.aws_account_id}"
-    aws_username      = "${var.aws_username}"
-    files             = "${var.files}"
-    base64_files      = "${var.base64_files}"
-    enable_versioning = "${var.enable_versioning}"
+    s3_fqdn           = var.s3_fqdn
+    aws_account_id    = var.aws_account_id
+    aws_username      = var.aws_username
+    files             = var.files
+    base64_files      = var.base64_files
+    enable_versioning = var.enable_versioning
 
     allow_public   = "true"
 
