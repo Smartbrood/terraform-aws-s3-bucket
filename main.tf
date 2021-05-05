@@ -91,7 +91,7 @@ resource "aws_s3_bucket_object" "file" {
   bucket = var.s3_fqdn
   key    = element(keys(var.files), count.index)
   source = lookup(var.files, element(keys(var.files), count.index))
-  etag   = md5(file("${lookup(var.files, element(keys(var.files), count.index))}"))
+  etag   = md5(file(lookup(var.files, element(keys(var.files), count.index))))
 }
 
 resource "aws_s3_bucket_object" "base64_file" {
