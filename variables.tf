@@ -12,13 +12,13 @@ variable "aws_username" {
 
 variable "files" {
   description = "map s3 keys to files"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
 variable "base64_files" {
   description = "map s3 keys to base64 encoded files"
-  type        = map
+  type        = map(any)
   default     = {}
 }
 
