@@ -16,7 +16,7 @@ resource "aws_s3_bucket" "this" {
   count         = var.create_bucket ? 1 : 0
   bucket        = var.s3_fqdn
   force_destroy = true
-  tags          = merge(var.tags, map("Name", format("%s", var.s3_fqdn)))
+  tags          = merge(var.tags, tomap({"Name" = format("%s", var.s3_fqdn)}))
 
   logging {
     target_bucket = var.loggingBucket != "" ? var.loggingBucket : local.defaultLoggingBucket
