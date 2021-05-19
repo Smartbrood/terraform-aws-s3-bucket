@@ -32,6 +32,11 @@ variable "allow_public" {
   default     = false
 }
 
+variable "create_logging_bucket" {
+  description = "Create a logging bucket (will not create if `loggingBucket` is defined)"
+  default     = true
+}
+
 variable "loggingBucket" {
   description = "The bucket you want to log S3 access to."
   default     = ""

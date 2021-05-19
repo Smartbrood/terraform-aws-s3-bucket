@@ -3,7 +3,7 @@ locals {
 }
 
 resource "aws_s3_bucket" "bucket_log" {
-  count  = var.loggingBucket == "" && var.create_bucket ? 1 : 0
+  count  = var.loggingBucket == "" && var.create_logging_bucket && var.create_bucket ? 1 : 0
   bucket = local.defaultLoggingBucket
   acl    = "log-delivery-write"
 
@@ -18,9 +18,12 @@ resource "aws_s3_bucket" "this" {
   force_destroy = true
   tags          = merge(var.tags, tomap({"Name" = format("%s", var.s3_fqdn)}))
 
-  logging {
-    target_bucket = var.loggingBucket != "" ? var.loggingBucket : local.defaultLoggingBucket
-    target_prefix = "log/"
+  dynamic "logging" {
+    for_each = var.create_logging_bucket == true ? [1] : []
+    content {
+      target_bucket = var.loggingBucket != "" ? var.loggingBucket : local.defaultLoggingBucket
+      target_prefix = "log/"
+    }
   }
 
   versioning {
