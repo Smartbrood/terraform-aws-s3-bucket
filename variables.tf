@@ -56,3 +56,8 @@ variable "enable_versioning" {
   description = "Conditionally enable versioning"
   default     = false
 }
+
+variable "enable_default_server_side_encryption" {
+  description = "Conditionally enable server side encryption by default"
+  default     = false
+}
