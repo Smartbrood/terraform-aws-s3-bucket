@@ -1,0 +1,48 @@
+name: Gitversion
+
+on:
+  push:
+    branches:
+      - main
+      - 'release/**'
+      
+env:
+  TERRAFORM_VERSION: 1.7.1
+
+permissions:
+  contents: write
+  id-token: write
+  packages: write
+
+jobs:
+  gitversion:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: ${{ env.TERRAFORM_VERSION }}
+      - name: Test terraform code
+        run: |
+          make test
+      - name: Install GitVersion
+        uses: gittools/actions/gitversion/setup@v0.10.2
+        with:
+          versionSpec: '5.x'
+          preferLatestVersion: true
+      - name: Determine Version
+        uses: gittools/actions/gitversion/execute@v0.10.2
+        with:
+          useConfigFile: true
+      - name: Display SemVer
+        run: |
+          echo "SemVer: $GITVERSION_SEMVER" && echo "$version" && echo "$major.$minor.$patch"
+      - name: Create git tag
+        run: |
+          git tag $GITVERSION_SEMVER
+      - name: Push git tag
+        run: git push origin $GITVERSION_SEMVER

@@ -1,0 +1,24 @@
+formatter: markdown table
+# header-from: ../docs/header.md
+output:
+  file: "./README.md"
+  mode: replace
+  template: |-
+    # terraform-aws-s3-bucket
+
+    Terraform module to create S3 bucket on AWS
+
+    {{ .Content }}
+
+sections:
+  hide-all: true
+  show:
+    - header
+    - inputs
+    - outputs
+    - providers
+    - resources
+
+sort:
+  enabled: true
+  by: required
